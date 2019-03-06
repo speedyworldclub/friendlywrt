@@ -2,7 +2,7 @@
 
 BOARD=$1
 if [ ! -e "config_${BOARD}.seed" ];then
-	echo "$0 [nanopi-h3]"
+	echo "$0 [nanopi-h3|nanopi-h6]"
 	exit 1
 fi
 
