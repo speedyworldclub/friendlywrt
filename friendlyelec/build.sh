@@ -2,7 +2,7 @@
 
 BOARD=$1
 if [ ! -e "config_${BOARD}.seed" ];then
-	echo "$0 [nanopi-h3|nanopi-h6]"
+	echo "$0 [nanopi-h3|nanopi-h5|nanopi-h6]"
 	exit 1
 fi
 
@@ -10,7 +10,6 @@ CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
 VER=18.06.1
 
 cd ..
-git checkout master-v${VER}
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
