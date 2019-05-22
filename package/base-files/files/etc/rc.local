@@ -2,4 +2,14 @@
 # the system init finished. By default this file does nothing.
 
 /usr/bin/lcd2usb_echo &
+
+board=`grep "board_name" /sys/class/sunxi_info/sys_info`
+board=${board#*FriendlyElec }
+if [ ! -e /etc/firstboot_${board} ]; then
+    /root/setup.sh
+    touch /etc/firstboot_${board}
+fi
+/bin/mount -a
+
+#iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 exit 0
