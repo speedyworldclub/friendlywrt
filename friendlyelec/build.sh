@@ -43,6 +43,6 @@ if [ ! -d dl ]; then
 	echo "dl directory not exist. Will make download full package from openwrt site."
 fi
 make download -j${CPU_CORES}
-make -j${CPU_CORES}
+make -j${CPU_CORES} #V=s
 
 create_rootfs_tgz
