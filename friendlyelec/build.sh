@@ -25,6 +25,7 @@ if [ $# -ne 1 ]; then
 fi
 
 BOARD=$1
+USING_DATE=$(date +%Y%m%d)
 if [ ! -e "config_${BOARD}.seed" ];then
 	usage
 fi
@@ -33,6 +34,7 @@ CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
 VER=18.06.1
 
 cd ..
+echo "${USING_DATE}" > ./package/base-files/files/etc/rom-version
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
