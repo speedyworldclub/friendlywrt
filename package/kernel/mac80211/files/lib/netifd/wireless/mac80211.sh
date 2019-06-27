@@ -448,8 +448,12 @@ mac80211_prepare_vif() {
 
 	json_get_vars ifname mode ssid wds powersave macaddr
 
-	[ -n "$ifname" ] || ifname="wlan${phy#phy}${if_idx:+-$if_idx}"
+	#[ -n "$ifname" ] || ifname="wlan${phy#phy}${if_idx:+-$if_idx}"
+	if [ -z "$ifname" ]; then
+		ifname=`ls /sys/class/ieee80211/$phy/device/net/`
+	fi
 	if_idx=$((${if_idx:-0} + 1))
+	logger "mac80211.sh->mac80211_prepare_vif phy=$phy ifname=$ifname"
 
 	set_default wds 0
 	set_default powersave 0
