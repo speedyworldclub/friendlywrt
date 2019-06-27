@@ -13,7 +13,9 @@ function create_rootfs_tgz()
 	cd ./friendlyelec
 	rm -rf ./rootfs ./rootfs-openwrt.tgz
 	cp -rdf ../build_dir/target-arm_cortex-a7+neon-vfpv4_musl_eabi/root-sunxi ./rootfs
-	rm ./rootfs/lib/modules/4.14.63/ -rf
+
+	mv ./rootfs/etc/modules.d/brcmfmac ./rootfs/etc/modules.d/10-brcmfmac
+	rm ./rootfs/lib/modules/* -rf
 	tar czf rootfs-openwrt.tgz rootfs
 	ls -l ./rootfs-openwrt.tgz
 	echo "done"
