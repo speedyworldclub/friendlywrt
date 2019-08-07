@@ -11,13 +11,13 @@ function create_rootfs_tgz()
 	echo "creating rootfs tarball..."
 	
 	cd ./friendlyelec
-	rm -rf ./rootfs ./rootfs-openwrt.tgz
+	rm -rf ./rootfs ./rootfs-friendlywrt.tgz
 	cp -rdf ../build_dir/target-arm_cortex-a7+neon-vfpv4_musl_eabi/root-sunxi ./rootfs
 
 	mv ./rootfs/etc/modules.d/brcmfmac ./rootfs/etc/modules.d/10-brcmfmac
 	rm ./rootfs/lib/modules/* -rf
-	tar czf rootfs-openwrt.tgz rootfs
-	ls -l ./rootfs-openwrt.tgz
+	tar czf rootfs-friendlywrt.tgz rootfs
+	ls -l ./rootfs-friendlywrt.tgz
 	echo "done"
 	cd ->/dev/null
 }
