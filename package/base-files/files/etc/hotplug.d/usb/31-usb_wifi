@@ -10,7 +10,7 @@ fi
 
 FE_DIR=/root/.friendlyelec/
 if [ "${DEVTYPE}" = usb_device -a "${PRODUCT}" = "bda/c811/200" ]; then
-    MODULE=8821cu
+    MODULE=rtl8821cu
     TARGET=wlan${MODULE}
 
     WIFI_PATH=`echo ${DEVPATH} | cut -d/ -f 3-`
@@ -37,7 +37,7 @@ if [ "${DEVTYPE}" = usb_device -a "${PRODUCT}" = "bda/c811/200" ]; then
 
             # Enable wifi and change ssid
             uci set wireless.${RADIO}.disabled=0
-            uci set wireless.default_${RADIO}.ssid=OpenWrt-${MODULE}-${ADDRESS}
+            uci set wireless.default_${RADIO}.ssid=${MODULE}-${ADDRESS}
             uci set wireless.default_${RADIO}.encryption=psk2
             uci set wireless.default_${RADIO}.key=password
             uci commit 

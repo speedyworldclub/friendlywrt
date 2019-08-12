@@ -18,6 +18,26 @@ case "$(board_name)" in
 "xunlong,orangepi-r1")
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	;;
+"friendlyarm,nanopi-r1")
+	ucidef_set_interfaces_lan_wan "eth1" "eth0"
+	;;
+"friendlyarm,nanopi-m1-plus" \
+|"friendlyarm,nanopi-duo2" \
+|"friendlyarm,nanopi-neo-s")
+	ucidef_set_interfaces_lan_wan "wlan0" "eth0"
+	;;
+"friendlyarm,nanopi-duo")
+	ucidef_set_interfaces_lan_wan "wlan0" "eth0"
+	;;
+"friendlyarm,nanopi-neo"|"friendlyarm,nanopi-m1")
+	ucidef_set_interface_wan "eth0"
+	;;
+"friendlyarm,nanopi-neo-air")
+	ucidef_set_interface_lan "wlan0"
+	;;
+"friendlyarm,nanopi-neo-core")
+	ucidef_set_interface_wan "eth0"
+	;;
 *)
 	ucidef_set_interface_lan 'eth0'
 	;;
