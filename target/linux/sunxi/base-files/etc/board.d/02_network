@@ -29,7 +29,10 @@ case "$(board_name)" in
 "friendlyarm,nanopi-duo")
 	ucidef_set_interfaces_lan_wan "wlan0" "eth0"
 	;;
-"friendlyarm,nanopi-neo"|"friendlyarm,nanopi-m1")
+"friendlyarm,nanopi-neo" \
+|"friendlyarm,nanopi-m1" \
+|"friendlyarm,zeropi" \
+)
 	ucidef_set_interface_wan "eth0"
 	;;
 "friendlyarm,nanopi-neo-air")
