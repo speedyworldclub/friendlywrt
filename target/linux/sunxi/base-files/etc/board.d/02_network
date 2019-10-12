@@ -18,7 +18,9 @@ case "$(board_name)" in
 "xunlong,orangepi-r1")
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	;;
-"friendlyelec,nanopi-r1")
+"friendlyelec,nanopi-r1" \
+|"friendlyelec,nanopi-r1s-h3" \
+|"friendlyelec,nanopi-r1s-h5")
 	ucidef_set_interfaces_lan_wan "eth1" "eth0"
 	;;
 "friendlyelec,nanopi-m1-plus" \
