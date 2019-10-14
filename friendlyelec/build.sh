@@ -8,13 +8,25 @@ function usage()
 
 function create_rootfs_tgz()
 {
-	echo "creating rootfs tarball..."
+	echo "creating base rootfs tarball(can not use directly)..."
 	
 	cd ./friendlyelec
 	rm -rf ./rootfs ./rootfs-friendlywrt.tgz
-	cp -rdf ../build_dir/target-arm_cortex-a7+neon-vfpv4_musl_eabi/root-sunxi ./rootfs
 
-	mv ./rootfs/etc/modules.d/brcmfmac ./rootfs/etc/modules.d/10-brcmfmac
+	case ${BOARD} in
+	nanopi-h3)
+		rootfs_dir=`readlink -f ../build_dir/target-arm_cortex-a7+neon-vfpv4_musl_eabi/root-sunxi`
+		;;
+	nanopi-h5|nanopi-h6)
+		rootfs_dir=`readlink -f ../build_dir/target-aarch64_cortex-a53_musl/root-sunxi`
+		;;
+	*)
+		echo "unsupported board: ${BOARD}"
+		exit 1
+		;;
+	esac
+
+	cp -rdf ${rootfs_dir} ./rootfs
 	rm ./rootfs/lib/modules/* -rf
 	tar czf rootfs-friendlywrt.tgz rootfs
 	ls -l ./rootfs-friendlywrt.tgz
@@ -36,7 +48,6 @@ CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
 VER=18.06.1
 
 cd ..
-echo "${USING_DATE}" > ./package/base-files/files/etc/rom-version
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
