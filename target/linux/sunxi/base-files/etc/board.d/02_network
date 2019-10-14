@@ -24,18 +24,19 @@ case "$(board_name)" in
 	ucidef_set_interfaces_lan_wan "eth1" "eth0"
 	;;
 "friendlyelec,nanopi-m1-plus" \
+|"friendlyelec,nanopi-k1-plus" \
+|"friendlyelec,nanopi-duo" \
 |"friendlyelec,nanopi-duo2" \
+|"friendlyelec,nanopi-neo-plus2" \
 |"friendlyelec,nanopi-neo-s")
 	ucidef_set_interfaces_lan_wan "wlan0" "eth0"
 	;;
-"friendlyelec,nanopi-duo")
-	ucidef_set_interfaces_lan_wan "wlan0" "eth0"
-	;;
 "friendlyelec,nanopi-neo" \
+|"friendlyelec,nanopi-neo2" \
+|"friendlyelec,nanopi-neo-core2" \
 |"friendlyelec,nanopi-neo2-black" \
 |"friendlyelec,nanopi-m1" \
-|"friendlyelec,zeropi" \
-)
+|"friendlyelec,zeropi")
 	ucidef_set_interface_wan "eth0"
 	;;
 "friendlyelec,nanopi-neo-air")
