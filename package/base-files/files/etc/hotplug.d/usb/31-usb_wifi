@@ -36,10 +36,27 @@ if [ "${DEVTYPE}" = usb_device -a "${PRODUCT}" = "bda/c811/200" ]; then
             logger "first init for ${MODULE}"
 
             # Enable wifi and change ssid
-            uci set wireless.${RADIO}.disabled=0
-            uci set wireless.default_${RADIO}.ssid=${MODULE}-${ADDRESS}
-            uci set wireless.default_${RADIO}.encryption=psk2
-            uci set wireless.default_${RADIO}.key=password
+            if [ -n "`uci get wireless.${RADIO}`" ]; then
+                uci batch <<EOF
+set wireless.${RADIO}.disabled=0
+set wireless.default_${RADIO}.ssid=${MODULE}-${ADDRESS}
+set wireless.default_${RADIO}.encryption=psk2
+set wireless.default_${RADIO}.key=password
+EOF
+            fi
+
+            # add lan interface if not exist. dnsmasq need this
+            if [ -z "`uci get network.lan`" ]; then
+                uci batch <<EOF
+set network.lan='interface'
+set network.lan.type='bridge'
+set network.lan.proto='static'
+set network.lan.ipaddr='192.168.2.1'
+set network.lan.netmask='255.255.255.0'
+set network.lan.ip6assign='60'
+EOF
+            fi
+
             uci commit 
         fi
         
