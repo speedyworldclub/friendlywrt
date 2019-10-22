@@ -3,8 +3,7 @@
 
 /usr/bin/lcd2usb_echo &
 
-board=`grep "board_name" /sys/class/sunxi_info/sys_info`
-board=${board#*FriendlyElec }
+board=$(cat /tmp/sysinfo/board_name | cut -d , -f2)
 if [ ! -e /etc/firstboot_${board} ]; then
     /root/setup.sh
     touch /etc/firstboot_${board}

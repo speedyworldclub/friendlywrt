@@ -40,18 +40,22 @@ mkdir -p ${FE_DIR}
 TAG=friendlyelec
 logger "${TAG}: /root/setup.sh running"
 
-PLATFORM='sun8i|sun50i'
-if ! grep -E $PLATFORM /sys/class/sunxi_info/sys_info -q; then
-        logger "only support $PLATFORM. exiting..."
-        exit 0
+VENDOR=$(cat /tmp/sysinfo/board_name | cut -d , -f1)
+if [ x${VENDOR} != x"friendlyelec" ]; then
+	if [ x${VENDOR} != x"friendlyarm" ]; then
+        	logger "only support friendlyelec boards. exiting..."
+        	exit 0
+	fi
 fi
 
-BOARD=`grep "board_name" /sys/class/sunxi_info/sys_info`
-BOARD=${BOARD#*FriendlyElec }
+if [ -f /sys/class/sunxi_info/sys_info ]; then
+    BOARD=`grep "board_name" /sys/class/sunxi_info/sys_info`
+    BOARD=${BOARD#*FriendlyElec }
 
-logger "${TAG}: init for ${BOARD}"
-if ls /root/board/${BOARD}/* >/dev/null 2>&1; then
-    cp -rf /root/board/${BOARD}/* /
+    logger "${TAG}: init for ${BOARD}"
+    if ls /root/board/${BOARD}/* >/dev/null 2>&1; then
+        cp -rf /root/board/${BOARD}/* /
+    fi
 fi
 
 # update /etc/config/network
