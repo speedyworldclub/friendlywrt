@@ -17,11 +17,25 @@ setup_ssid()
     local mac=`cat ${wlan_path}/address`
     
     local dev_path=/sys/devices/`uci get wireless.${r}.path`
-    idVendor=`cat ${dev_path}/../idVendor`
-    idProduct=`cat ${dev_path}/../idProduct`
-    if [ "x${idVendor}:${idProduct}" = "x0bda:c811" ]; then
-        chip="rtl8821cu"
-        touch ${FE_DIR}/first_insert_${chip}     # for /etc/hotplug.d/usb/31-usb_wifi
+
+    if [ -e "${dev_path}/../idVendor" -a -e "${dev_path}/../idProduct" ]; then
+	    idVendor=`cat ${dev_path}/../idVendor`
+	    idProduct=`cat ${dev_path}/../idProduct`
+	    if [ "x${idVendor}:${idProduct}" = "x0bda:c811" ]; then
+		    chip="rtl8821cu"
+		    touch ${FE_DIR}/first_insert_${chip}     # for /etc/hotplug.d/usb/31-usb_wifi
+	    fi
+    fi
+
+    if [ -e "${dev_path}/vendor" -a -e "${dev_path}/device" ]; then
+	    idVendor=`cat ${dev_path}/vendor`
+	    idProduct=`cat ${dev_path}/device`
+
+	    # enable 5g wifi-ap
+	    if [ "x${idVendor}:${idProduct}" = "x0x02d0:0x4356" ]; then
+		    uci set wireless.${r}.hwmode='11a'
+		    uci set wireless.${r}.channel='153'
+	    fi
     fi
 
     uci set wireless.${r}.disabled=0
@@ -41,6 +55,7 @@ TAG=friendlyelec
 logger "${TAG}: /root/setup.sh running"
 
 VENDOR=$(cat /tmp/sysinfo/board_name | cut -d , -f1)
+BOARD=$(cat /tmp/sysinfo/board_name | cut -d , -f2)
 if [ x${VENDOR} != x"friendlyelec" ]; then
 	if [ x${VENDOR} != x"friendlyarm" ]; then
         	logger "only support friendlyelec boards. exiting..."
@@ -49,12 +64,12 @@ if [ x${VENDOR} != x"friendlyelec" ]; then
 fi
 
 if [ -f /sys/class/sunxi_info/sys_info ]; then
-    BOARD=`grep "board_name" /sys/class/sunxi_info/sys_info`
-    BOARD=${BOARD#*FriendlyElec }
+    SUNXI_BOARD=`grep "board_name" /sys/class/sunxi_info/sys_info`
+    SUNXI_BOARD=${SUNXI_BOARD#*FriendlyElec }
 
-    logger "${TAG}: init for ${BOARD}"
-    if ls /root/board/${BOARD}/* >/dev/null 2>&1; then
-        cp -rf /root/board/${BOARD}/* /
+    logger "${TAG}: init for ${SUNXI_BOARD}"
+    if ls /root/board/${SUNXI_BOARD}/* >/dev/null 2>&1; then
+        cp -rf /root/board/${SUNXI_BOARD}/* /
     fi
 fi
 
