@@ -31,11 +31,17 @@ setup_ssid()
 	    idVendor=`cat ${dev_path}/vendor`
 	    idProduct=`cat ${dev_path}/device`
 
-	    # enable 5g wifi-ap
+	    # enable 5g wifi-ap (t4)
 	    if [ "x${idVendor}:${idProduct}" = "x0x02d0:0x4356" ]; then
 		    uci set wireless.${r}.hwmode='11a'
 		    uci set wireless.${r}.channel='153'
 	    fi
+
+	    # r2
+            if [ "x${idVendor}:${idProduct}" = "x0x02d0:0xa9bf" ]; then
+                    uci set wireless.${r}.hwmode='11a'
+                    uci set wireless.${r}.channel='153'
+            fi
     fi
 
     uci set wireless.${r}.disabled=0
